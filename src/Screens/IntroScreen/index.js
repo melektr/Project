@@ -1,45 +1,88 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import Carousel from 'react-native-snap-carousel/src/carousel/Carousel';
+import {View, Text, SafeAreaView,Dimensions,Image} from 'react-native';
+import {Images} from '../../assets/Images';
 import { DATA } from './constants';
-
-
-
+import normalize from '../../helpers/normalize'
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
 const IntroScreen = () => {
+  function* ygenerator() {
+    yield* [
+      //    ({<Image source={Images.smile1} style={{width:normalize(10),height:normalize(10)}}/>}),
+      Images.smile1,
+      Images.smile2,
+      Images.smile3,
+    ];
+  }
 
-    const renderItem=({item,index})=>{
-        return (
-            <View style={{
-                backgroundColor:'floralwhite',
-                borderRadius: 5,
-                height: 250,
-                padding: 50,
-                marginLeft: 25,
-                marginRight: 25, }}>
-              <Text style={{fontSize: 30}}>{item.title}</Text>
-              <Text>{item.text}</Text>
-              <Image source={item.img}/>
-            </View>
-  
-          )
-    }
-
-
-        return (
-          <SafeAreaView style={{flex: 1, backgroundColor:'floralwhite', paddingTop: 50, }}>
-            <View style={{ flex: 1, flexDirection:'row', justifyContent: 'center', }}>
-                <Carousel
-                  layout={"default"}
-                  ref={(item)=>item.id}
-                  data={DATA}
-                  sliderWidth={300}
-                  itemWidth={300}
-                  renderItem={this._renderItem}
-                  onSnapToItem = { index => this.setState({activeIndex:index}) } />
-            </View>
-          </SafeAreaView>
-        );
-    
-
+  const yAxis = ygenerator();
+  return (
+    <View style={styles.parent}>
+      <Text style={styles.title}>Bezier Line Chart</Text>
+      <LineChart
+        data={{
+          labels: ['💡', '03/02', '04/02', '05/02', '06/02', '07/02', '08/02'],
+          datasets: [
+            {
+              data: [
+                // "💡",
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+              ],
+            },
+            {
+              data: [
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+              ],
+            },
+          ],
+        }}
+        width={Dimensions.get('window').width - 20} // from react-native
+        height={320}
+        yAxisLabel="$"
+        yAxisSuffix="k"
+        yAxisInterval={1} // optional, defaults to 1
+            formatYLabel={()=><Image source={yAxis.next().value} style={{width:normalize(10), height:normalize(10)}}/>}
+        chartConfig={{
+          backgroundColor: '#F59C80',
+          backgroundGradientFrom: '#red',
+          backgroundGradientTo: 'white',
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `#F59C80`,
+          labelColor: (opacity = 1) => `#BFB6B2`,
+          style: {
+            borderRadius: 16,
+          },
+          propsForDots: {
+            r: '6',
+            strokeWidth: '2',
+            stroke: 'pink',
+          },
+        }}
+        bezier
+        style={{
+          marginVertical: 20,
+          // marginHorizontal:10,
+          borderRadius: 16,
+        }}
+      />
+    </View>
+  );
 };
+
 export default IntroScreen;

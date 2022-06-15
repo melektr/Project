@@ -2,10 +2,12 @@ import React from 'react';
 import {Text, View, Image} from 'react-native';
 import style from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const ProductItem = ({img, title, price, oldPrice, avgRating}) => {
+const ProductItem = ({img, title, price, oldPrice, avgRating,onProductPress}) => {
   return (
-    <View style={style.container}>
+    <View >
+      <TouchableOpacity  style={style.container} onPress={onProductPress}>
       <View style={style.imgContainer}>
         <Image source={{uri: img}} style={style.imgstyle}></Image>
       </View>
@@ -24,6 +26,7 @@ const ProductItem = ({img, title, price, oldPrice, avgRating}) => {
           <Text style={style.oldPriceStyle}>${oldPrice}</Text>
         </View>
       </View>
+      </TouchableOpacity>
     </View>
   );
 };

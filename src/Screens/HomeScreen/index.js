@@ -4,7 +4,7 @@ import ProductItem from '../../Components/ProductItem';
 import styles from './style';
 import products from '../../data/products';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -17,6 +17,7 @@ const HomeScreen = () => {
                 price={item.price}
                 oldPrice={item.oldPrice}
                 avgRating={item.avgRating}
+                onProductPress={()=>navigation.navigate('Intro')} 
               />
             );
           })}
